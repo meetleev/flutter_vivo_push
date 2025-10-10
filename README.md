@@ -15,7 +15,7 @@ vivo推送API(vpush)
                             appId: 'appId',
                             appKey: 'appKey',
                             appSecret: 'appSecret');
-    final regId = resp.token
+    final regId = resp.token;
 
 ```
 [example](./example/lib/main.dart)
