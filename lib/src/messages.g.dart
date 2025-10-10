@@ -14,20 +14,21 @@ PlatformException _createConnectionError(String channelName) {
     message: 'Unable to establish connection on channel: "$channelName".',
   );
 }
+
 bool _deepEquals(Object? a, Object? b) {
   if (a is List && b is List) {
     return a.length == b.length &&
         a.indexed
-        .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
   }
   if (a is Map && b is Map) {
-    return a.length == b.length && a.entries.every((MapEntry<Object?, Object?> entry) =>
-        (b as Map<Object?, Object?>).containsKey(entry.key) &&
-        _deepEquals(entry.value, b[entry.key]));
+    return a.length == b.length &&
+        a.entries.every((MapEntry<Object?, Object?> entry) =>
+            (b as Map<Object?, Object?>).containsKey(entry.key) &&
+            _deepEquals(entry.value, b[entry.key]));
   }
   return a == b;
 }
-
 
 enum LogLevel {
   verbose,
@@ -57,7 +58,8 @@ class TokenResp {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static TokenResp decode(Object result) {
     result as List<Object?>;
@@ -81,8 +83,7 @@ class TokenResp {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class ResultResp {
@@ -104,7 +105,8 @@ class ResultResp {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static ResultResp decode(Object result) {
     result as List<Object?>;
@@ -128,8 +130,7 @@ class ResultResp {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
 
 class QueryProfileIdsResp {
@@ -151,7 +152,8 @@ class QueryProfileIdsResp {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static QueryProfileIdsResp decode(Object result) {
     result as List<Object?>;
@@ -175,10 +177,8 @@ class QueryProfileIdsResp {
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hashAll(_toList())
-;
+  int get hashCode => Object.hashAll(_toList());
 }
-
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -187,16 +187,16 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is LogLevel) {
+    } else if (value is LogLevel) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    }    else if (value is TokenResp) {
+    } else if (value is TokenResp) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
-    }    else if (value is ResultResp) {
+    } else if (value is ResultResp) {
       buffer.putUint8(131);
       writeValue(buffer, value.encode());
-    }    else if (value is QueryProfileIdsResp) {
+    } else if (value is QueryProfileIdsResp) {
       buffer.putUint8(132);
       writeValue(buffer, value.encode());
     } else {
@@ -207,14 +207,14 @@ class _PigeonCodec extends StandardMessageCodec {
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 129: 
+      case 129:
         final int? value = readValue(buffer) as int?;
         return value == null ? null : LogLevel.values[value];
-      case 130: 
+      case 130:
         return TokenResp.decode(readValue(buffer)!);
-      case 131: 
+      case 131:
         return ResultResp.decode(readValue(buffer)!);
-      case 132: 
+      case 132:
         return QueryProfileIdsResp.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
@@ -226,9 +226,11 @@ class PushInterface {
   /// Constructor for [PushInterface].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  PushInterface({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
+  PushInterface(
+      {BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
       : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+        pigeonVar_messageChannelSuffix =
+            messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -236,13 +238,16 @@ class PushInterface {
   final String pigeonVar_messageChannelSuffix;
 
   Future<void> setLogLevel(LogLevel level) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.setLogLevel$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.setLogLevel$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[level]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[level]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -259,8 +264,10 @@ class PushInterface {
   }
 
   Future<LogLevel> getLogLevel() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.getLogLevel$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.getLogLevel$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -288,8 +295,10 @@ class PushInterface {
 
   /// 初始化push服务
   Future<void> initialize() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.initialize$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.initialize$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -312,8 +321,10 @@ class PushInterface {
 
   /// 打开应用push开关，订阅应用，成功后便可接收到当前应用的推送消息,  返回0表示成功，参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> openPush() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.openPush$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.openPush$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -341,8 +352,10 @@ class PushInterface {
 
   /// 关闭应用push开关，解订阅应用，解订阅后将收不到当前应用的推送消息,  返回0表示成功，参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> closePush() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.closePush$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.closePush$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -370,8 +383,10 @@ class PushInterface {
 
   /// 获取当前设备的当前应用的唯一标识，后台可基于此标识发送通知
   Future<TokenResp> getRegId() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.getRegId$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.getRegId$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -399,8 +414,10 @@ class PushInterface {
 
   /// 删除当前regid,  返回0表示成功，参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> deleteRegId() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.deleteRegId$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.deleteRegId$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -427,14 +444,21 @@ class PushInterface {
   }
 
   /// 注册push，获取申请的regId
-  Future<TokenResp> registerToken({required String appId, required String appKey, required String appSecret, }) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.registerToken$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+  Future<TokenResp> registerToken({
+    required String appId,
+    required String appKey,
+    required String appSecret,
+  }) async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.registerToken$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[appId, appKey, appSecret]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[appId, appKey, appSecret]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -457,8 +481,10 @@ class PushInterface {
 
   /// 解注册push，关闭push功能
   Future<ResultResp> unregisterToken() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.unregisterToken$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.unregisterToken$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -486,13 +512,16 @@ class PushInterface {
 
   /// 设置标签,  返回0表示成功，参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> setTopic(String topic) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.setTopic$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.setTopic$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[topic]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[topic]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -515,13 +544,16 @@ class PushInterface {
 
   /// 删除标签,  返回0表示成功，参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> deleteTopic(String topic) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.deleteTopic$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.deleteTopic$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[topic]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[topic]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -544,8 +576,10 @@ class PushInterface {
 
   /// 获取当前设备的应用标签，后台可基于此标签发送通知
   Future<List<String>> getTopics() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.getTopics$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.getTopics$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -573,8 +607,10 @@ class PushInterface {
 
   /// 用于判断当前系统是否支持push服务
   Future<bool> isSupport() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.isSupport$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.isSupport$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -602,13 +638,16 @@ class PushInterface {
 
   /// 查询设备是否支持对应push功能
   Future<bool> isPushSupport(int flag) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.isPushSupport$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.isPushSupport$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[flag]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[flag]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -631,8 +670,10 @@ class PushInterface {
 
   /// 是否支持profileId校验功能
   Future<bool> isSupportSyncProfileInfo() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.isSupportSyncProfileInfo$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.isSupportSyncProfileInfo$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -660,13 +701,16 @@ class PushInterface {
 
   /// 添加应用的profileId, 添加ID只允许一次添加一个，单个profileId长度限制为64，单应用最多设置10个
   Future<ResultResp> addProfileId(String profileId) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.addProfileId$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.addProfileId$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[profileId]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[profileId]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -689,13 +733,16 @@ class PushInterface {
 
   /// 删除应用指定的profileId
   Future<ResultResp> deleteProfileId(String profileId) async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.deleteProfileId$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.deleteProfileId$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[profileId]);
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[profileId]);
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_sendFuture as List<Object?>?;
     if (pigeonVar_replyList == null) {
@@ -718,8 +765,10 @@ class PushInterface {
 
   /// 除该应用下所有的profileId
   Future<ResultResp> deleteAllProfileId() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.deleteAllProfileId$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.deleteAllProfileId$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -747,8 +796,10 @@ class PushInterface {
 
   /// 查询应用所有的profileId
   Future<QueryProfileIdsResp> queryProfileIds() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.queryProfileIds$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.queryProfileIds$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
@@ -777,8 +828,10 @@ class PushInterface {
   /// 查询应用的订阅状态
   /// 0:已订阅状态；1：未订阅；其它：异常情况,参考公共状态码 https://dev.vivo.com.cn/documentCenter/doc/364#s-2gw875g9
   Future<int> querySubscribeState() async {
-    final String pigeonVar_channelName = 'dev.flutter.pigeon.vivo_push.PushInterface.querySubscribeState$pigeonVar_messageChannelSuffix';
-    final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.vivo_push.PushInterface.querySubscribeState$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,

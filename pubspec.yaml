@@ -1,6 +1,6 @@
 name: vivo_push
-description: "轻量级Flutter插件，用于集成vivo推送。它简化了vivo手机平台的推送通知开发，支持token注册、消息接收和回调处理."
-version: 0.0.1
+description: "Lightweight Flutter plugin for vivo push integration. Simplifies push notifications on vivo devices, supporting token registration, message receiving, and callback handling."
+version: 0.0.2
 homepage: https://github.com/meetleev
 repository: https://github.com/meetleev/flutter_vivo_push
 topics:

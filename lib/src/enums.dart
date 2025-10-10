@@ -14,4 +14,3 @@ enum SupportPushFlag {
   const SupportPushFlag(this.value);
   final int value;
 }
-
