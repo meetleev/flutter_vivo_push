@@ -8,7 +8,10 @@ vivo 推送API (vpush)
 一个轻量级 Flutter 插件，用于集成 vivo 推送 API。它简化了 vivo 手机平台的推送通知开发，支持 token 注册、消息接收和回调处理。
 
 ## Usage
-```dart
+
+``` dart
+    import 'package:vivo_push/vivo_push.dart';
+
     final vivoPushPlugin = VivoPush();
     await vivoPushPlugin.initialize();
     final resp = await vivoPushPlugin.registerToken(
