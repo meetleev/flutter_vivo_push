@@ -1,5 +1,6 @@
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import org.yaml.snakeyaml.Yaml
 
 File pubspec = new File(project.projectDir.parentFile, 'pubspec.yaml')
 String yaml = pubspec.text
@@ -7,7 +8,15 @@ String yaml = pubspec.text
 Matcher versionMatcher = Pattern.compile("^version:\\s*['|\"]?([^\\n|'\"]*)['|\"]?\$", Pattern.MULTILINE).matcher(yaml)
 versionMatcher.find()
 String library_version = versionMatcher.group(1).replaceAll("\\+", "-")
-
+File flutter_project_dir = rootProject.projectDir.parentFile
+def cfg = new Yaml().load(new File(flutter_project_dir, 'pubspec.yaml').text)
+String app_id = cfg.vivo_push?.app_id
+String app_key = cfg.vivo_push?.app_key
+if (null == app_id || null == app_key) {
+    throw new IllegalArgumentException("app_id or app_key is null, add code in pubspec.yaml:\nvivo_push:" +
+            "\n  app_id: \${your vivo app id}" +
+            "\n  app_key: \${your vivo app key}")
+}
 group = "com.skyza.vivo_push"
 version = library_version
 
@@ -36,9 +45,9 @@ rootProject.allprojects {
         mavenCentral()
 
         maven {
-           url 'https://repos.vivo.com.cn/maven/repository/external-lib/'
-           allowInsecureProtocol = true
-       }
+            url 'https://repos.vivo.com.cn/maven/repository/external-lib/'
+            allowInsecureProtocol = true
+        }
     }
 }
 
@@ -66,6 +75,10 @@ android {
 
     defaultConfig {
         minSdk = 23
+        manifestPlaceholders += [
+                APP_ID : app_id,
+                APP_KEY: app_key,
+        ]
         consumerProguardFiles 'consumer-rules.pro'
     }
 

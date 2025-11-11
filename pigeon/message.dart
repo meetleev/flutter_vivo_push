@@ -1,13 +1,15 @@
 import 'package:pigeon/pigeon.dart';
 
-@ConfigurePigeon(PigeonOptions(
-  dartOut: 'lib/src/messages.g.dart',
-  dartOptions: DartOptions(),
-  kotlinOut: 'android/src/main/kotlin/com/skyza/vivo_push/Messages.g.kt',
-  kotlinOptions: KotlinOptions(),
-  // copyrightHeader: 'pigeons/copyright.txt',
-  dartPackageName: 'vivo_push',
-))
+@ConfigurePigeon(
+  PigeonOptions(
+    dartOut: 'lib/src/messages.g.dart',
+    dartOptions: DartOptions(),
+    kotlinOut: 'android/src/main/kotlin/com/skyza/vivo_push/Messages.g.kt',
+    kotlinOptions: KotlinOptions(),
+    // copyrightHeader: 'pigeons/copyright.txt',
+    dartPackageName: 'vivo_push',
+  ),
+)
 class TokenResp {
   final String? token;
 
@@ -67,10 +69,11 @@ abstract class PushInterface {
 
   /// 注册push，获取申请的regId
   @async
-  TokenResp registerToken(
-      {required String appId,
-      required String appKey,
-      required String appSecret});
+  TokenResp registerToken({
+    required String appId,
+    required String appKey,
+    required String appSecret,
+  });
 
   /// 解注册push，关闭push功能
   @async

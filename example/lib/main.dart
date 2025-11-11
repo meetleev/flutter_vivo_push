@@ -24,50 +24,53 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('vivo_push_example'),
+        appBar: AppBar(title: const Text('vivo_push_example')),
+        body: Center(
+          child: Column(
+            children: [
+              Text(_msg),
+              TextButton(
+                onPressed: () {
+                  _vivoPushPlugin.initialize();
+                },
+                child: Text('initialize'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final errCode = await _vivoPushPlugin.openPush();
+                  if (mounted) {
+                    setState(() {
+                      _msg = 'errCode:$errCode';
+                    });
+                  }
+                },
+                child: Text('openPush'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final resp = await _vivoPushPlugin.registerToken(
+                    appId: '$appId',
+                    appKey: appKey,
+                    appSecret: appSecret,
+                  );
+                  if (mounted) {
+                    if (null != resp.token) {
+                      setState(() {
+                        _msg = 'token:${resp.token!}';
+                      });
+                    } else if (null != resp.errCode) {
+                      setState(() {
+                        _msg = 'errCode:${resp.errCode!}';
+                      });
+                    }
+                  }
+                },
+                child: Text('registerToken'),
+              ),
+            ],
           ),
-          body: Center(
-            child: Column(
-              children: [
-                Text(_msg),
-                TextButton(
-                    onPressed: () {
-                      _vivoPushPlugin.initialize();
-                    },
-                    child: Text('initialize')),
-                TextButton(
-                    onPressed: () async {
-                      final errCode = await _vivoPushPlugin.openPush();
-                      if (mounted) {
-                        setState(() {
-                          _msg = 'errCode:$errCode';
-                        });
-                      }
-                    },
-                    child: Text('openPush')),
-                TextButton(
-                    onPressed: () async {
-                      final resp = await _vivoPushPlugin.registerToken(
-                          appId: '$appId',
-                          appKey: appKey,
-                          appSecret: appSecret);
-                      if (mounted) {
-                        if (null != resp.token) {
-                          setState(() {
-                            _msg = 'token:${resp.token!}';
-                          });
-                        } else if (null != resp.errCode) {
-                          setState(() {
-                            _msg = 'errCode:${resp.errCode!}';
-                          });
-                        }
-                      }
-                    },
-                    child: Text('registerToken')),
-              ],
-            ),
-          )),
+        ),
+      ),
     );
   }
 }

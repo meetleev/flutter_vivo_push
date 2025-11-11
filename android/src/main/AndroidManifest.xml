@@ -18,5 +18,11 @@
             android:name="com.vivo.push.sdk.service.CommandClientService"
             android:exported="true"
             android:permission="com.push.permission.UPSTAGESERVICE" />
+        <meta-data
+            android:name="app_id"
+            android:value="${APP_ID}" />
+        <meta-data
+            android:name="api_key"
+            android:value="${APP_KEY}" />
     </application>
 </manifest>
