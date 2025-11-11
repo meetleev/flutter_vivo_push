@@ -84,3 +84,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+vivo_push:
+  app_id: 'your app id'
+  app_key: 'your app key'
