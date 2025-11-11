@@ -36,11 +36,12 @@ class VivoPush {
     required String appId,
     required String appKey,
     required String appSecret,
-  }) => _pushInterface.registerToken(
-    appId: appId,
-    appKey: appKey,
-    appSecret: appSecret,
-  );
+  }) =>
+      _pushInterface.registerToken(
+        appId: appId,
+        appKey: appKey,
+        appSecret: appSecret,
+      );
 
   /// 解注册push，关闭push功能
   Future<ResultResp> unregisterToken() => _pushInterface.unregisterToken();
